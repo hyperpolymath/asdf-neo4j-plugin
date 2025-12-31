@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
+# Philosophical overlay: https://github.com/hyperpolymath/palimpsest-licence
 set -euo pipefail
 readonly REPO="neo4j/neo4j"
 export TOOL_NAME="neo4j" TOOL_CMD="neo4j"
