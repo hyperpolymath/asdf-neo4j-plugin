@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: AGPL-3.0-or-later
+set -euo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/utils.bash"
+check_dependencies
+[[ -z "${ASDF_INSTALL_VERSION:-}" ]] && fail "ASDF_INSTALL_VERSION required"
+[[ -z "${ASDF_INSTALL_PATH:-}" ]] && fail "ASDF_INSTALL_PATH required"
+dp="${ASDF_DOWNLOAD_PATH:-${ASDF_INSTALL_PATH}/tmp}"
+[[ ! -d "${dp}" ]] && { mkdir -p "${dp}"; download_file "$(get_download_url "${ASDF_INSTALL_VERSION}")" "${dp}/neo4j.tar.gz"; tar -xzf "${dp}/neo4j.tar.gz" -C "${dp}" --strip-components=1; }
+mkdir -p "${ASDF_INSTALL_PATH}" && cp -r "${dp}"/* "${ASDF_INSTALL_PATH}/"
+chmod +x "${ASDF_INSTALL_PATH}/bin"/* 2>/dev/null || true
+[[ -d "${ASDF_INSTALL_PATH}/tmp" ]] && rm -rf "${ASDF_INSTALL_PATH}/tmp"
+log_info "Neo4j ${ASDF_INSTALL_VERSION} installed"
